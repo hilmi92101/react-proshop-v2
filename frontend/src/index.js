@@ -17,7 +17,7 @@ import './assets/styles/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-// components
+// screen
 import HomeScreen from './screens/HomeScreen';
 
 const router = createBrowserRouter(
