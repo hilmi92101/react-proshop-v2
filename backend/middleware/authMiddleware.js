@@ -1,20 +1,27 @@
 import jwt from 'jsonwebtoken';
-import asyncHandler from './asyncHandler.js';
 import User from '../models/userModel.js';
+
+import asyncHandler from './asyncHandler.js';
+import { setJwtCookie, updateTokenExpiration } from '../utils/jwtUtil.js';
+import { getJwtCookieNameTest } from '../config/cookieConfig.js';
 
 // User must be authenticated
 const protect = asyncHandler(async (req, res, next) => {
     
     let token;
 
-    // Read JWT from the 'jwt' cookie
-    token = req.cookies.jwt;
+    // Read JWT 
+    let cookieName = getJwtCookieNameTest();
+    token = req.cookies[cookieName];
 
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
             req.user = await User.findById(decoded.userId).select('-password');
+
+            const updatedToken = updateTokenExpiration(decoded.userId);
+            setJwtCookie(res, updatedToken);
 
             next();
         } catch (error) {

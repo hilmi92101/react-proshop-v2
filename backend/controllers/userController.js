@@ -1,7 +1,7 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import User from '../models/userModel.js';
+import { createJwtToken, setJwtCookie, destroyJwtCookie } from '../utils/jwtUtil.js';
 
-import jwt from 'jsonwebtoken';
 
 // @desc    Auth user & get token
 // @route   POST /api/users/authUser
@@ -14,17 +14,8 @@ const authUser = asyncHandler(async (req, res) => {
 
     if (user && (await user.matchPassword(password))) {
 
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-            expiresIn: '1h',
-        });
-
-        // Set JWT as an HTTP-Only cookie
-        res.cookie('jwt', token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV !== 'development', // Use secure cookies in production
-            sameSite: 'strict', // Prevent CSRF attacks
-            maxAge: 60 * 60 * 1000, // 1 hour in milliseconds
-        });
+        const token = createJwtToken(user._id);
+        setJwtCookie(res, token);
 
         res.json({
             _id: user._id,
@@ -32,6 +23,7 @@ const authUser = asyncHandler(async (req, res) => {
             email: user.email,
             isAdmin: user.isAdmin,
         });
+
     } else {
         res.status(401);
         throw new Error('Invalid email or password');
@@ -42,10 +34,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users/logout
 // @access  Public
 const logoutUser = (req, res) => {
-    res.cookie('jwt', '', {
-        httpOnly: true,
-        expires: new Date(0),
-    });
+    destroyJwtCookie(res);
     res.status(200).json({ message: 'Logged out successfully' });
 };
 

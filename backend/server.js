@@ -3,6 +3,9 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
+dotenv.config();
+const port = process.env.PORT || 5000;
+
 // connection
 import connectDB from './config/db.js';
 
@@ -13,9 +16,7 @@ import userRoutes from './routes/userRoutes.js';
 // middleware
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
-dotenv.config();
-const port = process.env.PORT || 5000;
-
+// use connection
 connectDB();
 
 // app
