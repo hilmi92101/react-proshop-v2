@@ -3,7 +3,7 @@ import User from '../models/userModel.js';
 
 import asyncHandler from './asyncHandler.js';
 import { setJwtCookie, updateTokenExpiration } from '../utils/jwtUtil.js';
-import { getJwtCookieNameTest } from '../config/cookieConfig.js';
+import { getJwtCookieName } from '../config/cookieConfig.js';
 
 // User must be authenticated
 const protect = asyncHandler(async (req, res, next) => {
@@ -11,7 +11,7 @@ const protect = asyncHandler(async (req, res, next) => {
     let token;
 
     // Read JWT 
-    let cookieName = getJwtCookieNameTest();
+    let cookieName = getJwtCookieName();
     token = req.cookies[cookieName];
 
     if (token) {

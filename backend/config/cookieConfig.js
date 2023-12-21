@@ -1,7 +1,7 @@
 //const jwtCookieName = process.env.JWT_COOKIE_NAME || 'jwt';
 
-const getJwtCookieNameTest = () => {
+const getJwtCookieName = () => {
     return process.env.JWT_COOKIE_NAME || 'jwt';
 };
 
-export { getJwtCookieNameTest };
+export { getJwtCookieName };

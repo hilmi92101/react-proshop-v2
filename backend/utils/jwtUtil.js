@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { getJwtCookieNameTest } from '../config/cookieConfig.js';
+import { getJwtCookieName } from '../config/cookieConfig.js';
 
 const createJwtToken = (userId) => {
 
@@ -18,7 +18,7 @@ const createJwtToken = (userId) => {
 
 const setJwtCookie = (res, token) => {
 
-    let cookieName = getJwtCookieNameTest();
+    let cookieName = getJwtCookieName();
     res.cookie(cookieName, token, {
         httpOnly: true,
         secure: process.env.NODE_ENV !== 'development',  //Use secure cookies in production
@@ -28,7 +28,7 @@ const setJwtCookie = (res, token) => {
 };
 
 const destroyJwtCookie = (res) => {
-    let cookieName = getJwtCookieNameTest();
+    let cookieName = getJwtCookieName();
     res.cookie(cookieName, '', {
         httpOnly: true,
         expires: new Date(0),
@@ -49,24 +49,6 @@ const updateTokenExpiration = (userId) => {
 
 };
 
-// @desc        For testing. Since stored cookie use different timezone.
-// @example     getCookieExpiryWithCurrentTimezone('Wed, 20 Dec 2023 18:16:27 GMT')
-const getCookieExpiryWithCurrentTimezone = (utcTimestamp) => {
 
-    // UTC timestamp from the "Expires" attribute
-    //const utcTimestamp = "Wed, 20 Dec 2023 18:02:29 GMT";
-
-    // Create a Date object from the UTC timestamp
-    const utcDate = new Date(utcTimestamp);
-
-    // Get the local time zone
-    const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-    // Format the local date and time
-    const localDate = utcDate.toLocaleString(undefined, { timeZone: localTimeZone });
-
-    console.log(localDate); // Display the local date and time
-
-};
 
 export { createJwtToken, setJwtCookie, destroyJwtCookie, updateTokenExpiration };
