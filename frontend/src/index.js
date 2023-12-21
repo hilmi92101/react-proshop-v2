@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 // css
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/styles/bootstrap.custom.css';
+import 'react-toastify/dist/ReactToastify.css';
 import './assets/styles/index.css';
 
 import reportWebVitals from './reportWebVitals';
