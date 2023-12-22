@@ -1,7 +1,5 @@
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-
-// redux slice
 import { useLogoutMutation } from '../redux/slices/userApiSlice'; // backend
 import { logout } from '../redux/slices/authSlice'; // frontend
 
